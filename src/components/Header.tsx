@@ -4,7 +4,8 @@ import { Menu, X, ExternalLink } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import CONFIG from "@/data/config";
-import logoImage from "@/assets/logo.png";
+import { getPlan, type Plan } from "@/lib/plan";
+// logo served from /public/logo.svg
 
 const navItems = [
   { label: "Product", href: "/#product" },
@@ -19,12 +20,17 @@ function isHashLink(href: string) {
 
 export const Header = () => {
   const [open, setOpen] = useState(false);
+  const [plan, setPlanState] = useState<Plan>("free");
   const mobileRef = useRef<HTMLDivElement>(null);
   const location = useLocation();
 
   useEffect(() => {
     // close mobile menu on route change
     setOpen(false);
+  }, [location.pathname, location.hash]);
+
+  useEffect(() => {
+    setPlanState(getPlan());
   }, [location.pathname, location.hash]);
 
   useEffect(() => {
@@ -60,7 +66,7 @@ export const Header = () => {
           >
             <div className="w-10 h-10 relative overflow-hidden rounded-full">
               <img
-                src={logoImage}
+                src="/logo.svg"
                 alt="AlphaTape logo"
                 className="absolute w-full h-full object-cover scale-[1.6]"
                 style={{ objectPosition: "center" }}
@@ -85,13 +91,16 @@ export const Header = () => {
           </nav>
 
           <div className="hidden md:flex items-center gap-3">
+            <div className="text-xs px-2 py-1 rounded-full border border-border bg-card/40 text-muted-foreground">
+              Plan: <span className="text-foreground font-semibold">{plan.toUpperCase()}</span>
+            </div>
             <Button asChild variant="secondary">
               <Link to="/demo">
                 Open demo <ExternalLink className="w-4 h-4 ml-2" aria-hidden="true" />
               </Link>
             </Button>
             <Button asChild variant="hero">
-              <Link to="/pricing">Get Pro</Link>
+              <Link to="/pricing">Upgrade</Link>
             </Button>
           </div>
 

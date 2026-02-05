@@ -12,14 +12,14 @@ export const CONFIG = {
     KEYWORDS:
       "polymarket, polymarket analytics, polymarket trades, smart money, whale trades, prediction markets, crypto",
     AUTHOR: "AlphaTape",
-    OG_IMAGE: "/logo.png",
+    OG_IMAGE: "/logo.svg",
   },
 
   BRAND: {
     // Finance-style green accent (see src/index.css for actual theme tokens)
     PRIMARY_COLOR: "#22c55e",
     SECONDARY_COLOR: "#0b0b0b",
-    LOGO_URL: "/logo.png",
+    LOGO_URL: "/logo.svg",
     FAVICON: "/favicon.ico",
   },
 

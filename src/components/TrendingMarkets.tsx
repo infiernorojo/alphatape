@@ -1,10 +1,13 @@
-import { useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { ExternalLink } from "lucide-react";
+import { ExternalLink, Star } from "lucide-react";
+import { toast } from "sonner";
 
 import { apiMarkets, type GammaMarket } from "@/lib/polymarket";
 import { Card } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
+import { getPlan, isAtLeastPro, type Plan } from "@/lib/plan";
+import { addToWatchlist, removeFromWatchlist, isWatched } from "@/lib/watchlist";
 
 function parseJsonArray(s?: string): string[] {
   if (!s) return [];
@@ -29,6 +32,15 @@ function formatCompactUsd(v: number) {
 }
 
 export function TrendingMarkets({ compact = false }: { compact?: boolean }) {
+  const [plan, setPlan] = useState<Plan>("free");
+  const [watchSeed, setWatchSeed] = useState(0);
+
+  useEffect(() => {
+    setPlan(getPlan());
+  }, []);
+
+  const pro = isAtLeastPro(plan);
+
   const query = useQuery({
     queryKey: ["pm-markets", { limit: compact ? 12 : 30 }],
     queryFn: () => apiMarkets({ limit: compact ? 12 : 30, active: true, closed: false }),
@@ -83,17 +95,44 @@ export function TrendingMarkets({ compact = false }: { compact?: boolean }) {
                     </div>
                   </div>
 
-                  <div className="text-right whitespace-nowrap">
-                    <a
-                      className="text-xs text-primary inline-flex items-center gap-1 hover:underline"
-                      href={`https://polymarket.com/market/${m.slug}`}
-                      target="_blank"
-                      rel="noreferrer"
-                      aria-label={`Open on Polymarket: ${m.question}`}
-                    >
-                      open <ExternalLink className="w-3.5 h-3.5" aria-hidden="true" />
-                    </a>
-                    <div className="text-[11px] text-muted-foreground mt-1">
+                  <div className="text-right whitespace-nowrap flex flex-col items-end gap-2">
+                    <div className="flex items-center gap-2">
+                      {pro && (
+                        <button
+                          className={
+                            "inline-flex items-center justify-center w-8 h-8 rounded-lg border transition-colors " +
+                            (isWatched(m.conditionId)
+                              ? "border-primary/40 bg-primary/10 text-primary"
+                              : "border-border bg-card/40 text-muted-foreground hover:text-foreground")
+                          }
+                          aria-label={isWatched(m.conditionId) ? "Remove from watchlist" : "Add to watchlist"}
+                          onClick={() => {
+                            if (isWatched(m.conditionId)) {
+                              removeFromWatchlist(m.conditionId);
+                              toast.message("Removed from watchlist");
+                            } else {
+                              addToWatchlist({ conditionId: m.conditionId, slug: m.slug, question: m.question });
+                              toast.success("Added to watchlist");
+                            }
+                            setWatchSeed((x) => x + 1);
+                          }}
+                        >
+                          <Star className="w-4 h-4" aria-hidden="true" fill={isWatched(m.conditionId) ? "currentColor" : "none"} />
+                        </button>
+                      )}
+
+                      <a
+                        className="text-xs text-primary inline-flex items-center gap-1 hover:underline"
+                        href={`https://polymarket.com/market/${m.slug}`}
+                        target="_blank"
+                        rel="noreferrer"
+                        aria-label={`Open on Polymarket: ${m.question}`}
+                      >
+                        open <ExternalLink className="w-3.5 h-3.5" aria-hidden="true" />
+                      </a>
+                    </div>
+
+                    <div className="text-[11px] text-muted-foreground">
                       {outcomes.length ? outcomes.join(" / ") : "Binary"}
                     </div>
                   </div>

@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { ExternalLink } from "lucide-react";
 
 import CONFIG from "@/data/config";
-import logoImage from "@/assets/logo.png";
+// logo served from /public/logo.svg
 
 export const Footer = () => {
   return (
@@ -12,7 +12,7 @@ export const Footer = () => {
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 relative overflow-hidden rounded-full">
               <img
-                src={logoImage}
+                src="/logo.svg"
                 alt="AlphaTape logo"
                 className="absolute w-full h-full object-cover scale-[1.6]"
                 style={{ objectPosition: "center" }}

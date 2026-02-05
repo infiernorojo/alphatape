@@ -5,8 +5,8 @@ const plans = [
   {
     name: "Free",
     price: "$0",
-    desc: "Try the demo widgets.",
-    features: ["Limited tape", "Trending markets", "Basic wallet lookup"],
+    desc: "Explore the demo widgets.",
+    features: ["Whale tape (limited)", "Trending markets", "Wallet lookup"],
     cta: "Open demo",
     href: "/demo",
     highlight: false,
@@ -14,19 +14,27 @@ const plans = [
   {
     name: "Pro",
     price: "$19/mo",
-    desc: "For traders scanning daily.",
-    features: ["Higher limits", "Faster refresh", "Saved watchlists (coming soon)"],
-    cta: "Get Pro",
-    href: "/pricing",
+    desc: "For daily scanning.",
+    features: [
+      "Bigger tape + faster refresh",
+      "Pattern tags (lightweight heuristics)",
+      "CSV export + saved filters",
+    ],
+    cta: "Pay with crypto",
+    href: "/checkout?plan=pro",
     highlight: true,
   },
   {
     name: "Team",
     price: "$49/mo",
-    desc: "Small research groups.",
-    features: ["Shared watchlist (coming soon)", "Priority updates", "Early feature access"],
-    cta: "See pricing",
-    href: "/pricing",
+    desc: "For small research groups.",
+    features: [
+      "All Pro features",
+      "Multiple watchlists / workspaces",
+      "Shareable snapshots (URL-encoded)",
+    ],
+    cta: "Pay with crypto",
+    href: "/checkout?plan=team",
     highlight: false,
   },
 ];
@@ -38,7 +46,7 @@ export function PricingTeaser() {
         <div className="max-w-2xl">
           <h2 className="font-heading text-3xl md:text-4xl font-bold">Pricing</h2>
           <p className="mt-3 text-muted-foreground">
-            This is a frontend MVP — the point is a legit, paid-product feel. Payments/checkout can be wired later.
+            MVP flow: you can pay in crypto and unlock Pro/Team on this device (no accounts yet).
           </p>
         </div>
 

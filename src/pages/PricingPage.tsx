@@ -2,13 +2,15 @@ import { Link } from "react-router-dom";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { Button } from "@/components/ui/button";
+import { Card } from "@/components/ui/card";
+import { getPlan } from "@/lib/plan";
 
 const plans = [
   {
     name: "Free",
     price: "$0",
     desc: "Explore the demo widgets.",
-    features: ["Limited tape", "Trending markets", "Wallet lookup"],
+    features: ["Whale tape (limited)", "Trending markets", "Wallet lookup"],
     cta: "Open demo",
     href: "/demo",
     highlight: false,
@@ -17,33 +19,53 @@ const plans = [
     name: "Pro",
     price: "$19/mo",
     desc: "For daily scanning.",
-    features: ["Higher request limits", "Faster refresh", "Priority UX updates"],
-    cta: "Get Pro (coming soon)",
-    href: "/demo",
+    features: [
+      "Bigger tape + faster refresh",
+      "Pattern tags (lightweight heuristics)",
+      "CSV export + saved filters",
+      "Higher request limits",
+    ],
+    cta: "Pay with crypto",
+    href: "/checkout?plan=pro",
     highlight: true,
   },
   {
     name: "Team",
     price: "$49/mo",
-    desc: "For small groups.",
-    features: ["Team seats (coming soon)", "Shared watchlists (coming soon)", "Early features"],
-    cta: "Contact",
-    href: "/demo",
+    desc: "For small research groups.",
+    features: [
+      "All Pro features",
+      "Multiple workspaces (local)",
+      "Shareable snapshots (URL-encoded)",
+    ],
+    cta: "Pay with crypto",
+    href: "/checkout?plan=team",
     highlight: false,
   },
 ];
 
 export default function PricingPage() {
+  const current = getPlan();
+
   return (
     <div className="min-h-screen bg-background">
       <Header />
       <main id="main" className="pt-20">
         <section className="py-10">
           <div className="container mx-auto px-4">
-            <h1 className="font-heading text-3xl md:text-4xl font-bold">Pricing</h1>
-            <p className="mt-3 text-muted-foreground max-w-2xl">
-              This is a conversion-first MVP. Real checkout can be plugged in later (Stripe/crypto/etc.).
-            </p>
+            <div className="flex items-start justify-between gap-4 flex-col md:flex-row">
+              <div>
+                <h1 className="font-heading text-3xl md:text-4xl font-bold">Pricing</h1>
+                <p className="mt-3 text-muted-foreground max-w-2xl">
+                  AlphaTape is a conversion-first MVP: real crypto checkout + immediate local unlock (no accounts yet).
+                </p>
+              </div>
+              <Card className="card-gradient border-border p-4 min-w-[220px]">
+                <div className="text-xs text-muted-foreground">Current plan</div>
+                <div className="text-lg font-bold gradient-text">{current.toUpperCase()}</div>
+                <div className="text-xs text-muted-foreground mt-1">Stored locally (frontend MVP)</div>
+              </Card>
+            </div>
 
             <div className="mt-8 grid md:grid-cols-3 gap-4">
               {plans.map((p) => (
@@ -76,14 +98,11 @@ export default function PricingPage() {
             </div>
 
             <div className="mt-10 rounded-2xl border border-border bg-card/30 p-6 text-sm text-muted-foreground">
-              <div className="font-semibold text-foreground">Notes</div>
+              <div className="font-semibold text-foreground">Why pay?</div>
               <ul className="mt-2 space-y-1">
-                <li>• AlphaTape does not trade or custody funds.</li>
-                <li>• Data is provided “as is” from public sources.</li>
-                <li>
-                  • If you want a real checkout, we can wire it with crypto (USDC) or Stripe later — still without a heavy
-                  backend.
-                </li>
+                <li>• Pro removes the “tiny demo” limits and makes the tape a daily tool.</li>
+                <li>• Pattern tags help you scan faster (no heavy quant engine in this MVP).</li>
+                <li>• Export + saved filters = repeatable workflows.</li>
               </ul>
 
               <div className="mt-4">

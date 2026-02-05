@@ -3,6 +3,7 @@ import { Footer } from "@/components/Footer";
 import { LiveTape } from "@/components/LiveTape";
 import { TrendingMarkets } from "@/components/TrendingMarkets";
 import { WalletLookup } from "@/components/WalletLookup";
+import { WatchlistPanel } from "@/components/WatchlistPanel";
 
 export default function DemoPage() {
   return (
@@ -22,8 +23,9 @@ export default function DemoPage() {
               <TrendingMarkets />
             </div>
 
-            <div className="mt-4">
+            <div className="mt-4 grid lg:grid-cols-2 gap-4">
               <WalletLookup />
+              <WatchlistPanel />
             </div>
 
             <section className="mt-10 rounded-2xl border border-border bg-card/30 p-6">

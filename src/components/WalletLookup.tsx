@@ -1,4 +1,4 @@
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
 import { ExternalLink, Search } from "lucide-react";
 
@@ -16,9 +16,9 @@ function shortAddr(addr: string, chars = 6) {
   return `${addr.slice(0, 2 + chars)}…${addr.slice(-chars)}`;
 }
 
-export function WalletLookup() {
-  const [value, setValue] = useState("");
-  const [address, setAddress] = useState<string | null>(null);
+export function WalletLookup({ initialAddress }: { initialAddress?: string }) {
+  const [value, setValue] = useState(initialAddress ?? "");
+  const [address, setAddress] = useState<string | null>(initialAddress ?? null);
 
   const valid = address ? isEvmAddress(address) : false;
 
