@@ -10,6 +10,24 @@ export default defineConfig({
     hmr: {
       overlay: false,
     },
+    // Local dev convenience: make /api/pm/* work without needing Vercel Functions.
+    proxy: {
+      "/api/pm/trades": {
+        target: "https://data-api.polymarket.com",
+        changeOrigin: true,
+        rewrite: (p) => p.replace("/api/pm", ""),
+      },
+      "/api/pm/positions": {
+        target: "https://data-api.polymarket.com",
+        changeOrigin: true,
+        rewrite: (p) => p.replace("/api/pm", ""),
+      },
+      "/api/pm/markets": {
+        target: "https://gamma-api.polymarket.com",
+        changeOrigin: true,
+        rewrite: (p) => p.replace("/api/pm", ""),
+      },
+    },
   },
   plugins: [react()],
   resolve: {

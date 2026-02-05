@@ -1,27 +1,45 @@
 import { Header } from "@/components/Header";
 import { HeroSection } from "@/components/HeroSection";
-import { ServicesGrid } from "@/components/ServicesGrid";
-import { WhySection } from "@/components/WhySection";
 import { Footer } from "@/components/Footer";
-import { CartDrawer } from "@/components/CartDrawer";
-import { ServiceModalProvider } from "@/contexts/ServiceModalContext";
-import { GlobalServiceModal } from "@/components/GlobalServiceModal";
+import { ProductSection } from "@/components/ProductSection";
+import { LiveTape } from "@/components/LiveTape";
+import { TrendingMarkets } from "@/components/TrendingMarkets";
+import { PricingTeaser } from "@/components/PricingTeaser";
+import { FAQSection } from "@/components/FAQSection";
 
 const Index = () => {
   return (
-    <ServiceModalProvider>
-      <div className="min-h-screen bg-background">
-        <Header />
-        <main>
-          <HeroSection />
-          <ServicesGrid />
-          <WhySection />
-        </main>
-        <Footer />
-        <CartDrawer />
-        <GlobalServiceModal />
-      </div>
-    </ServiceModalProvider>
+    <div className="min-h-screen bg-background">
+      <Header />
+      <main id="main">
+        <HeroSection />
+        <ProductSection />
+
+        <section className="py-14">
+          <div className="container mx-auto px-4">
+            <div className="max-w-2xl">
+              <h2 className="font-heading text-3xl md:text-4xl font-bold">Real data preview</h2>
+              <p className="mt-3 text-muted-foreground">
+                These widgets pull live data from Polymarket public endpoints (via a stateless proxy in production).
+              </p>
+            </div>
+
+            <div className="mt-8 grid lg:grid-cols-2 gap-4">
+              <LiveTape compact />
+              <TrendingMarkets compact />
+            </div>
+
+            <div className="mt-4 text-xs text-muted-foreground">
+              Want the full demo (wallet lookup + larger tape)? → /demo
+            </div>
+          </div>
+        </section>
+
+        <PricingTeaser />
+        <FAQSection />
+      </main>
+      <Footer />
+    </div>
   );
 };
 

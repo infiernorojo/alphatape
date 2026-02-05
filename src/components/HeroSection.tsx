@@ -1,123 +1,124 @@
 import { motion } from "framer-motion";
-import { Button } from "@/components/ui/button";
-import "../styles/rocket-loader.css";
+import { Link } from "react-router-dom";
+import { ArrowRight, Zap } from "lucide-react";
 
-const stats = [
-  { value: "50K+", label: "CLIENTES" },
-  { value: "250K+", label: "ÓRDENES" },
-  { value: "15M+", label: "SEGUIDORES VENDIDOS" },
-  { value: "45M+", label: "LIKES VENDIDOS" },
-];
+import { Button } from "@/components/ui/button";
+import CONFIG from "@/data/config";
 
 export const HeroSection = () => {
-  const scrollToServices = () => {
-    const servicesSection = document.querySelector('#services-section');
-    if (servicesSection) {
-      servicesSection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
-  };
-
-  const scrollToWhySection = () => {
-    const whySection = document.querySelector('#why-section');
-    if (whySection) {
-      whySection.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    }
-  };
-
   return (
-    <section className="relative min-h-[auto] md:min-h-screen flex items-center justify-center hero-gradient overflow-hidden pt-24 md:pt-32 pb-12 md:pb-16">
-      {/* Background Glow Effects */}
-      <div className="absolute inset-0 overflow-hidden">
-        <div className="absolute top-1/4 left-1/4 w-96 h-96 bg-primary/10 rounded-full blur-3xl" />
-        <div className="absolute bottom-1/4 right-1/4 w-80 h-80 bg-accent/10 rounded-full blur-3xl" />
+    <section className="relative hero-gradient overflow-hidden pt-24 md:pt-32 pb-14">
+      {/* background glows */}
+      <div className="absolute inset-0 overflow-hidden" aria-hidden="true">
+        <div className="absolute -top-24 left-1/4 w-[32rem] h-[32rem] bg-primary/10 rounded-full blur-3xl" />
+        <div className="absolute -bottom-24 right-1/4 w-[28rem] h-[28rem] bg-accent/10 rounded-full blur-3xl" />
       </div>
 
       <div className="container mx-auto px-4 relative z-10">
-        <div className="grid lg:grid-cols-2 gap-12 items-center">
-          {/* Left Content */}
-          <div className="text-center lg:text-left order-2 lg:order-1">
+        <div className="grid lg:grid-cols-2 gap-10 items-center">
+          <div className="text-center lg:text-left">
             <motion.div
-              initial={{ opacity: 0, y: 30 }}
+              initial={{ opacity: 0, y: 18 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.6 }}
+              transition={{ duration: 0.5 }}
             >
-              <h1 className="font-heading text-4xl md:text-5xl lg:text-6xl font-bold mb-6 text-balance">
-                #1 <span className="gradient-text">REDES SOCIALES</span> EN MÉXICO
+              <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-border bg-card/50 text-xs text-muted-foreground">
+                <Zap className="w-3.5 h-3.5 text-primary" aria-hidden="true" />
+                Public-data Polymarket analytics (frontend MVP)
+              </div>
+
+              <h1 className="font-heading text-4xl md:text-5xl lg:text-6xl font-bold mt-5 mb-5 text-balance">
+                {CONFIG.TEXT.HERO_TITLE.split("Polymarket")[0]}
+                <span className="gradient-text">Polymarket</span>
+                {CONFIG.TEXT.HERO_TITLE.split("Polymarket")[1] ?? ""}
               </h1>
-              
+
               <p className="text-muted-foreground text-lg md:text-xl mb-8 max-w-xl mx-auto lg:mx-0">
-                Acelera tu crecimiento en redes sociales con AlphaTape. Obtén seguidores reales, 
-                vistas, likes y más con nuestras estrategias de marketing. Conocidos por entrega rápida, 
-                calidad premium y precios bajos desde 2017.
+                {CONFIG.TEXT.HERO_SUBTITLE}
               </p>
 
-              <div className="flex flex-col sm:flex-row gap-4 justify-center lg:justify-start">
-                <Button variant="heroOutline" size="xl" onClick={scrollToWhySection}>
-                  SABER MÁS
+              <div className="flex flex-col sm:flex-row gap-3 justify-center lg:justify-start">
+                <Button asChild variant="hero" size="xl">
+                  <Link to="/demo">
+                    {CONFIG.TEXT.CTA_PRIMARY} <ArrowRight className="w-4 h-4 ml-2" aria-hidden="true" />
+                  </Link>
                 </Button>
-                <Button variant="hero" size="xl" onClick={scrollToServices}>
-                  VER TODOS LOS SERVICIOS
+                <Button asChild variant="heroOutline" size="xl">
+                  <Link to="/pricing">{CONFIG.TEXT.CTA_SECONDARY}</Link>
                 </Button>
+              </div>
+
+              <div className="mt-6 text-xs text-muted-foreground">
+                {CONFIG.TEXT.DISCLAIMER_SHORT}
               </div>
             </motion.div>
           </div>
 
-          {/* Right - Rocket Loader Animation */}
-          <div className="order-1 lg:order-2 flex justify-center items-center min-h-[250px] md:min-h-[400px]">
-            <motion.div
-              initial={{ opacity: 0, scale: 0.8 }}
-              animate={{ opacity: 1, scale: 1 }}
-              transition={{ duration: 0.8, delay: 0.2 }}
-              className="relative w-full h-48 md:h-64 flex items-center justify-center"
-            >
-              <div className="loader">
-                <span>
-                  <span></span>
-                  <span></span>
-                  <span></span>
-                  <span></span>
-                </span>
-                <div className="base">
-                  <span></span>
-                  <div className="face"></div>
-                </div>
+          <motion.div
+            initial={{ opacity: 0, scale: 0.98 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.6, delay: 0.1 }}
+            className="relative"
+          >
+            <div className="card-gradient border border-border rounded-2xl p-5 shadow-lg">
+              <div className="flex items-center justify-between mb-3">
+                <div className="text-sm font-semibold">Live Whale Tape (preview)</div>
+                <div className="text-xs text-muted-foreground">updates on /demo</div>
               </div>
-              <div className="longfazers">
-                <span></span>
-                <span></span>
-                <span></span>
-                <span></span>
+
+              <div className="space-y-3">
+                {[
+                  {
+                    side: "BUY",
+                    market: "Will Gold hit $10,000 by end of February?",
+                    amount: "$1,167",
+                    price: "0.996",
+                  },
+                  {
+                    side: "SELL",
+                    market: "Will BTC close above $100k this week?",
+                    amount: "$2,500",
+                    price: "0.421",
+                  },
+                  {
+                    side: "BUY",
+                    market: "Who wins the next election?",
+                    amount: "$5,000",
+                    price: "0.615",
+                  },
+                ].map((row, i) => (
+                  <div
+                    key={i}
+                    className="flex items-start justify-between gap-3 rounded-xl border border-border bg-background/40 px-3 py-2"
+                  >
+                    <div className="min-w-14">
+                      <span
+                        className={
+                          "text-xs font-bold " +
+                          (row.side === "BUY" ? "text-primary" : "text-red-400")
+                        }
+                      >
+                        {row.side}
+                      </span>
+                    </div>
+                    <div className="flex-1">
+                      <div className="text-sm leading-snug line-clamp-2">{row.market}</div>
+                      <div className="text-xs text-muted-foreground">Price: {row.price}</div>
+                    </div>
+                    <div className="text-right">
+                      <div className="text-sm font-semibold">{row.amount}</div>
+                      <div className="text-xs text-muted-foreground">notional</div>
+                    </div>
+                  </div>
+                ))}
               </div>
-            </motion.div>
-          </div>
+
+              <div className="mt-4 text-xs text-muted-foreground">
+                Real data on the demo page is pulled from Polymarket public endpoints via a CORS-safe proxy.
+              </div>
+            </div>
+          </motion.div>
         </div>
-
-        {/* Stats Bar */}
-        <motion.div
-          initial={{ opacity: 0, y: 40 }}
-          animate={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.4 }}
-          className="mt-8 md:mt-16 lg:mt-24"
-        >
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 bg-card/50 backdrop-blur-sm rounded-2xl p-8 border border-border">
-            {stats.map((stat, index) => (
-              <motion.div
-                key={stat.label}
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.4, delay: 0.5 + index * 0.1 }}
-                className="text-center"
-              >
-                <div className="text-3xl md:text-4xl font-bold gradient-text mb-1">
-                  {stat.value}
-                </div>
-                <div className="text-sm text-muted-foreground tracking-wider">
-                  {stat.label}
-                </div>
-              </motion.div>
-            ))}
-          </div>
-        </motion.div>
       </div>
     </section>
   );
