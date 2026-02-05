@@ -1,10 +1,11 @@
 import { useEffect, useRef, useState } from "react";
 import { Link, useLocation } from "react-router-dom";
-import { Menu, X, ExternalLink } from "lucide-react";
+import { Menu, X, ExternalLink, LogOut, User as UserIcon } from "lucide-react";
 
 import { Button } from "@/components/ui/button";
 import CONFIG from "@/data/config";
 import { getPlan, type Plan } from "@/lib/plan";
+import { useAuth } from "@/contexts/AuthContext";
 // logo served from /public/logo.svg
 
 const navItems = [
@@ -23,6 +24,8 @@ export const Header = () => {
   const [plan, setPlanState] = useState<Plan>("free");
   const mobileRef = useRef<HTMLDivElement>(null);
   const location = useLocation();
+
+  const { user, isAuthenticated, logout } = useAuth();
 
   useEffect(() => {
     // close mobile menu on route change
@@ -91,17 +94,44 @@ export const Header = () => {
           </nav>
 
           <div className="hidden md:flex items-center gap-3">
-            <div className="text-xs px-2 py-1 rounded-full border border-border bg-card/40 text-muted-foreground">
-              Plan: <span className="text-foreground font-semibold">{plan.toUpperCase()}</span>
-            </div>
+            {isAuthenticated ? (
+              <div className="text-xs px-2 py-1 rounded-full border border-border bg-card/40 text-muted-foreground inline-flex items-center gap-2">
+                <UserIcon className="w-3.5 h-3.5" aria-hidden="true" />
+                <span className="text-foreground font-semibold">{user?.name ?? "Account"}</span>
+              </div>
+            ) : (
+              <div className="text-xs px-2 py-1 rounded-full border border-border bg-card/40 text-muted-foreground">
+                Plan: <span className="text-foreground font-semibold">{plan.toUpperCase()}</span>
+              </div>
+            )}
+
             <Button asChild variant="secondary">
               <Link to="/demo">
                 Open demo <ExternalLink className="w-4 h-4 ml-2" aria-hidden="true" />
               </Link>
             </Button>
-            <Button asChild variant="hero">
-              <Link to="/pricing">Upgrade</Link>
-            </Button>
+
+            {isAuthenticated ? (
+              <Button variant="secondary" onClick={logout}>
+                <LogOut className="w-4 h-4 mr-2" aria-hidden="true" />
+                Logout
+              </Button>
+            ) : (
+              <>
+                <Button asChild variant="secondary">
+                  <Link to="/login">Login</Link>
+                </Button>
+                <Button asChild variant="hero">
+                  <Link to="/register">Sign up</Link>
+                </Button>
+              </>
+            )}
+
+            {!isAuthenticated && (
+              <Button asChild variant="hero">
+                <Link to="/pricing">Upgrade</Link>
+              </Button>
+            )}
           </div>
 
           <button
