@@ -45,6 +45,13 @@ const COINS: Coin[] = [
         warning: "Send ONLY via TRC20. Wrong network = permanent loss.",
       },
       {
+        id: "bsc",
+        name: "BEP20",
+        fullName: "BNB Chain (BEP20)",
+        address: "0x376818665bC6041fb2cb449cDa362Ed10a492e2e",
+        warning: "Send ONLY via BNB Chain (BEP20). Wrong network = permanent loss.",
+      },
+      {
         id: "polygon",
         name: "Polygon",
         fullName: "Polygon (PoS)",
@@ -102,6 +109,20 @@ const COINS: Coin[] = [
         fullName: "Ethereum Mainnet",
         address: "0x376818665bC6041fb2cb449cDa362Ed10a492e2e",
         warning: "Ethereum fees can be high.",
+      },
+      {
+        id: "arbitrum",
+        name: "Arbitrum",
+        fullName: "Arbitrum One",
+        address: "0x376818665bC6041fb2cb449cDa362Ed10a492e2e",
+        warning: "Lower fees than mainnet. Send ONLY via Arbitrum One.",
+      },
+      {
+        id: "polygon",
+        name: "Polygon",
+        fullName: "Polygon (PoS)",
+        address: "0x376818665bC6041fb2cb449cDa362Ed10a492e2e",
+        warning: "Very low fees. Send ONLY via Polygon.",
       },
     ],
   },
@@ -197,6 +218,7 @@ function explorerAddressUrl(netId: string, address: string) {
   if (netId === "solana") return `https://solscan.io/account/${address}`;
   if (netId === "tron" || netId === "trc20") return `https://tronscan.org/#/address/${address}`;
   if (netId === "bsc") return `https://bscscan.com/address/${address}`;
+  if (netId === "arbitrum") return `https://arbiscan.io/address/${address}`;
   if (netId === "erc20" || netId === "ethereum") return `https://etherscan.io/address/${address}`;
   // default to polygon
   return `https://polygonscan.com/address/${address}`;
@@ -207,6 +229,7 @@ function explorerLabel(netId: string) {
   if (netId === "solana") return "Solscan";
   if (netId === "tron" || netId === "trc20") return "Tronscan";
   if (netId === "bsc") return "BscScan";
+  if (netId === "arbitrum") return "Arbiscan";
   if (netId === "erc20" || netId === "ethereum") return "Etherscan";
   return "Polygonscan";
 }
