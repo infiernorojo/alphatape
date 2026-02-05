@@ -18,9 +18,9 @@ const Index = () => {
         <section className="py-14">
           <div className="container mx-auto px-4">
             <div className="max-w-2xl">
-              <h2 className="font-heading text-3xl md:text-4xl font-bold">Real data preview</h2>
+              <h2 className="font-heading text-3xl md:text-4xl font-bold">Live data</h2>
               <p className="mt-3 text-muted-foreground">
-                These widgets pull live data from Polymarket public endpoints (via a stateless proxy in production).
+                Realtime tape + market snapshots powered by Polymarket public endpoints.
               </p>
             </div>
 
@@ -30,7 +30,7 @@ const Index = () => {
             </div>
 
             <div className="mt-4 text-xs text-muted-foreground">
-              Want the full demo (wallet lookup + larger tape)? → /demo
+              Open the full demo (wallet lookup, radars, leaderboards): /demo
             </div>
           </div>
         </section>
