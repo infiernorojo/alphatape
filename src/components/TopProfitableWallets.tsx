@@ -110,7 +110,7 @@ export function TopProfitableWallets() {
           <div>
             <div className="text-sm font-semibold inline-flex items-center gap-2">
               <Trophy className="w-4 h-4 text-primary" aria-hidden="true" />
-              Top Profitable Wallets (active in window)
+              Top PnL Wallets (active in window)
             </div>
             <div className="text-xs text-muted-foreground mt-1">
               Filtered by activity in the selected window and ranked by <span className="text-foreground">cashPnl</span>
@@ -183,7 +183,7 @@ export function TopProfitableWallets() {
                       size="sm"
                       className="mt-1"
                       onClick={async () => {
-                        // Copy portfolio → add current positions into watchlist
+                        // Copy portfolio → add current positions into your watchlist
                         const positions = await apiPositions({ user: r.wallet, limit: 30, sortBy: "CURRENT", sortDirection: "DESC", sizeThreshold: 1 });
                         let added = 0;
                         for (const p of positions) {

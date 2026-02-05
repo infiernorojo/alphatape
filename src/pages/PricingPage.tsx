@@ -15,7 +15,7 @@ const plans = [
   },
   {
     name: "Pro",
-    price: "$89/mo",
+    price: "89 USDT/mo",
     desc: "Retail-grade edge.",
     features: [
       "Bigger tape + faster refresh",
@@ -31,7 +31,7 @@ const plans = [
   },
   {
     name: "Team",
-    price: "$499/mo",
+    price: "499 USDT/mo",
     desc: "For serious research teams.",
     features: [
       "All Pro features",

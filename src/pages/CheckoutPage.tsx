@@ -279,7 +279,7 @@ export default function CheckoutPage() {
                 <div className="rounded-2xl border border-border bg-card/40 p-4 text-right">
                   <div className="text-xs text-muted-foreground">Selected plan</div>
                   <div className="text-lg font-bold gradient-text">{plan.toUpperCase()}</div>
-                  <div className="text-sm text-muted-foreground">${usdAmount} / month</div>
+                  <div className="text-sm text-muted-foreground">{usdAmount} USDT / month</div>
                 </div>
               </div>
             </div>
@@ -290,7 +290,7 @@ export default function CheckoutPage() {
                   <div className="text-sm font-semibold">1) Choose coin & network</div>
                   <div className="text-xs text-muted-foreground">We show the exact address. Always match the network.</div>
 
-                  <div className="mt-4 grid grid-cols-2 gap-2">
+                  <div className="mt-4 grid grid-cols-2 md:grid-cols-4 gap-2">
                     {COINS.map((c) => (
                       <button
                         key={c.id}
