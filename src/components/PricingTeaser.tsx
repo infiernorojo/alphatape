@@ -17,7 +17,8 @@ const plans = [
     desc: "For daily scanning.",
     features: [
       "Bigger tape + faster refresh",
-      "Pattern tags (lightweight heuristics)",
+      "Pattern tags (conviction / longshot / exit)",
+      "Hot Markets radar (where whales concentrate)",
       "CSV export + saved filters",
     ],
     cta: "Pay with crypto",
@@ -30,6 +31,7 @@ const plans = [
     desc: "For small research groups.",
     features: [
       "All Pro features",
+      "Whale Wallets radar (top recent flow)",
       "Multiple watchlists / workspaces",
       "Shareable snapshots (URL-encoded)",
     ],

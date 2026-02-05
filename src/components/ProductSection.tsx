@@ -30,8 +30,8 @@ export function ProductSection() {
         <div className="max-w-2xl">
           <h2 className="font-heading text-3xl md:text-4xl font-bold">What you get</h2>
           <p className="mt-3 text-muted-foreground">
-            AlphaTape is intentionally lightweight: no heavy analytics engine, just the pieces that make users trust the
-            product and want access.
+            AlphaTape is intentionally lightweight (frontend MVP): no heavy analytics engine, but we still give retail
+            what they actually want — tape, radars, tags, and easy verification.
           </p>
         </div>
 

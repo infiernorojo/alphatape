@@ -21,7 +21,8 @@ const plans = [
     desc: "For daily scanning.",
     features: [
       "Bigger tape + faster refresh",
-      "Pattern tags (lightweight heuristics)",
+      "Pattern tags (conviction / longshot / exit)",
+      "Hot Markets radar (where whales concentrate)",
       "CSV export + saved filters",
       "Higher request limits",
     ],
@@ -35,6 +36,7 @@ const plans = [
     desc: "For small research groups.",
     features: [
       "All Pro features",
+      "Whale Wallets radar (top flow)",
       "Multiple workspaces (local)",
       "Shareable snapshots (URL-encoded)",
     ],
@@ -98,11 +100,12 @@ export default function PricingPage() {
             </div>
 
             <div className="mt-10 rounded-2xl border border-border bg-card/30 p-6 text-sm text-muted-foreground">
-              <div className="font-semibold text-foreground">Why pay?</div>
+              <div className="font-semibold text-foreground">Why retail pays for Pro</div>
               <ul className="mt-2 space-y-1">
-                <li>• Pro removes the “tiny demo” limits and makes the tape a daily tool.</li>
-                <li>• Pattern tags help you scan faster (no heavy quant engine in this MVP).</li>
-                <li>• Export + saved filters = repeatable workflows.</li>
+                <li>• You stop guessing: the tape + radars show where real size is flowing.</li>
+                <li>• Pattern tags make scanning faster (conviction vs longshot vs exits).</li>
+                <li>• Watchlists + saved filters turn “one lucky scroll” into a repeatable routine.</li>
+                <li>• CSV export is for people who want receipts and back-checks.</li>
               </ul>
 
               <div className="mt-4">

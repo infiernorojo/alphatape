@@ -20,6 +20,12 @@ export function WalletLookup({ initialAddress }: { initialAddress?: string }) {
   const [value, setValue] = useState(initialAddress ?? "");
   const [address, setAddress] = useState<string | null>(initialAddress ?? null);
 
+  useEffect(() => {
+    if (!initialAddress) return;
+    setValue(initialAddress);
+    setAddress(initialAddress);
+  }, [initialAddress]);
+
   const valid = address ? isEvmAddress(address) : false;
 
   const positionsQuery = useQuery({
