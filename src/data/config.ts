@@ -1,4 +1,4 @@
-// AlphaTape configuration (frontend-only MVP)
+// AlphaTape configuration
 
 export const CONFIG = {
   PROJECT_NAME: "AlphaTape",

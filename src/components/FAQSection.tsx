@@ -37,8 +37,8 @@ export function FAQSection() {
             <AccordionItem value="item-4">
               <AccordionTrigger>Do you guarantee “winning wallets”?</AccordionTrigger>
               <AccordionContent>
-                No. This MVP intentionally avoids heavy PnL/leaderboard modeling. It surfaces activity so users can do
-                their own research. Not financial advice.
+                No. We surface activity and wallet performance signals so you can do your own research. Not financial
+                advice.
               </AccordionContent>
             </AccordionItem>
           </Accordion>

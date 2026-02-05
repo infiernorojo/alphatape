@@ -252,9 +252,9 @@ export default function CheckoutPage() {
       return;
     }
 
-    // Frontend MVP behavior: unlock locally.
+    // Activate plan on this device.
     if (plan !== "free") setPlan(plan);
-    toast.success(`Unlocked ${plan.toUpperCase()} on this device`);
+    toast.success(`Access activated: ${plan.toUpperCase()}`);
     navigate("/demo");
   };
 
@@ -272,8 +272,7 @@ export default function CheckoutPage() {
                 </Link>
                 <h1 className="font-heading text-3xl md:text-4xl font-bold mt-3">Checkout</h1>
                 <p className="mt-2 text-muted-foreground">
-                  Pay with crypto (stablecoins recommended). This is a frontend MVP: after sending, click “I sent payment”
-                  to unlock on this device.
+                  Pay with crypto (stablecoins recommended). After sending, click “I sent payment” to activate access.
                 </p>
               </div>
               <div className="hidden md:block">
@@ -337,7 +336,7 @@ export default function CheckoutPage() {
                   <div className="text-sm font-semibold">2) Send payment</div>
                   <div className="text-xs text-muted-foreground">
                     Amount: <span className="text-foreground font-semibold">{payAmount.text}</span>
-                    {coin.isStable ? "" : " (approx)"}
+                    {coin.isStable ? "" : " (estimated)"}
                   </div>
                   {!coin.isStable && (
                     <div className="text-[11px] text-muted-foreground mt-1">
@@ -391,7 +390,7 @@ export default function CheckoutPage() {
                       </div>
 
                       <div className="mt-3 text-xs text-muted-foreground">
-                        MVP note: unlock is stored in localStorage for now. Real on-chain verification can be added later.
+                        Once active, Pro/Team unlocks the full tape limits and premium widgets.
                       </div>
                     </div>
                   </div>

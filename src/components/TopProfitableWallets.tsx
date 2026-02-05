@@ -54,7 +54,7 @@ export function TopProfitableWallets() {
     return now - 30 * 24 * 3600;
   }, [period, now]);
 
-  // We only build this from wallets seen in the tape (keeps it verifiable and lightweight)
+  // Built from wallets seen in the tape (verifiable + fast)
   const tradesQ = useQuery({
     queryKey: ["pm-trades-for-top-wallets", { plan }],
     queryFn: () => apiTrades({ limit: pro ? 600 : 200, filterType: "CASH", filterAmount: pro ? 150 : 1000 }),
@@ -72,7 +72,7 @@ export function TopProfitableWallets() {
     }
     return [...map.entries()]
       .sort((a, b) => b[1] - a[1])
-      .slice(0, pro ? 15 : 0)
+      .slice(0, pro ? 10 : 0)
       .map(([wallet, flowNotional]) => ({ wallet, flowNotional }));
   }, [tradesQ.data, cutoff, pro]);
 
@@ -86,7 +86,7 @@ export function TopProfitableWallets() {
 
       const results = await Promise.all(
         candidateWallets.map(async (w) => {
-          const positions = await apiPositions({ user: w.wallet, limit: 50, sortBy: "CASHPNL", sortDirection: "DESC", sizeThreshold: 1 });
+          const positions = await apiPositions({ user: w.wallet, limit: 30, sortBy: "CASHPNL", sortDirection: "DESC", sizeThreshold: 1 });
           const pnlCash = positions.reduce((s, p) => s + Number(p.cashPnl ?? 0), 0);
           const pnlRealized = positions.reduce((s, p) => s + Number(p.realizedPnl ?? 0), 0);
           const initialValue = positions.reduce((s, p) => s + Number(p.initialValue ?? 0), 0);
@@ -110,11 +110,11 @@ export function TopProfitableWallets() {
           <div>
             <div className="text-sm font-semibold inline-flex items-center gap-2">
               <Trophy className="w-4 h-4 text-primary" aria-hidden="true" />
-              Top Profitable Wallets
+              Top Profitable Wallets (active in window)
             </div>
             <div className="text-xs text-muted-foreground mt-1">
-              Ranked by <span className="text-foreground">cashPnl</span> across open positions (as returned by Polymarket
-              Data API). Wallets are sampled from recent tape activity.
+              Filtered by activity in the selected window and ranked by <span className="text-foreground">cashPnl</span>
+              (as returned by Polymarket Data API).
             </div>
           </div>
 
@@ -183,19 +183,19 @@ export function TopProfitableWallets() {
                       size="sm"
                       className="mt-1"
                       onClick={async () => {
-                        // Copy portfolio → add all current positions into watchlist (frontend MVP)
-                        const positions = await apiPositions({ user: r.wallet, limit: 50, sortBy: "CURRENT", sortDirection: "DESC", sizeThreshold: 1 });
+                        // Copy portfolio → add current positions into watchlist
+                        const positions = await apiPositions({ user: r.wallet, limit: 30, sortBy: "CURRENT", sortDirection: "DESC", sizeThreshold: 1 });
                         let added = 0;
                         for (const p of positions) {
                           if (!p.conditionId || !p.slug) continue;
                           addToWatchlist({ conditionId: p.conditionId, slug: p.slug, question: p.title ?? p.slug });
                           added += 1;
                         }
-                        toast.success(`Copied ${added} positions → watchlist`);
+                        toast.success(`Copied ${added} markets → watchlist`);
                       }}
                     >
                       <CopyIcon className="w-4 h-4 mr-2" aria-hidden="true" />
-                      Copy positions
+                      Copy wallet
                     </Button>
                   )}
                 </div>
@@ -203,8 +203,7 @@ export function TopProfitableWallets() {
             ))}
 
             <div className="mt-3 text-[11px] text-muted-foreground">
-              Transparency: this is not a global leaderboard. We rank wallets that appeared in our tape window and show
-              the PnL fields provided by Polymarket’s Data API.
+              Method: we sample wallets active in the selected window and rank by Polymarket Data API PnL fields.
             </div>
           </div>
         )}

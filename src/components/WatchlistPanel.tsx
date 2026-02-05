@@ -44,7 +44,7 @@ export function WatchlistPanel() {
     <Card className="card-gradient border-border">
       <div className="p-4 md:p-5">
         <div className="text-sm font-semibold">Watchlist</div>
-        <div className="text-xs text-muted-foreground mt-1">Saved locally on this device (frontend MVP).</div>
+        <div className="text-xs text-muted-foreground mt-1">Your saved watchlist.</div>
 
         <div className="mt-4 space-y-2">
           {items.map((it) => (

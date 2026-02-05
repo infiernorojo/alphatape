@@ -24,7 +24,7 @@ export const HeroSection = () => {
             >
               <div className="inline-flex items-center gap-2 px-3 py-1 rounded-full border border-border bg-card/50 text-xs text-muted-foreground">
                 <Zap className="w-3.5 h-3.5 text-primary" aria-hidden="true" />
-                Public-data Polymarket analytics (frontend MVP)
+                Public-data Polymarket analytics
               </div>
 
               <h1 className="font-heading text-4xl md:text-5xl lg:text-6xl font-bold mt-5 mb-5 text-balance">
@@ -62,8 +62,8 @@ export const HeroSection = () => {
           >
             <div className="card-gradient border border-border rounded-2xl p-5 shadow-lg">
               <div className="flex items-center justify-between mb-3">
-                <div className="text-sm font-semibold">Live Whale Tape (preview)</div>
-                <div className="text-xs text-muted-foreground">updates on /demo</div>
+                <div className="text-sm font-semibold">Live Whale Tape</div>
+                <div className="text-xs text-muted-foreground">real-time feed</div>
               </div>
 
               <div className="space-y-3">

@@ -90,7 +90,7 @@ export default function DemoPage() {
               <h2 className="font-heading text-2xl font-bold">How to verify</h2>
               <p className="mt-2 text-sm text-muted-foreground max-w-3xl">
                 Every trade row includes a Polygonscan tx link when available. Market cards link to Polymarket. We keep
-                this MVP lightweight (no heavy quant engine) — the goal is a fast, trustworthy retail UX.
+                this product fast — the goal is a trustworthy retail UX.
               </p>
 
               <div className="mt-4 text-sm text-muted-foreground">
