@@ -89,5 +89,5 @@
     "vite": "^5.4.19",
     "vitest": "^3.2.4"
   },
-  "description": "Real-time Polymarket smart money tape (frontend-only MVP)"
+  "description": "Realtime Polymarket smart money tape — radars, wallet leaderboards, and copy workflows."
 }
