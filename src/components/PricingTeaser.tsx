@@ -13,12 +13,13 @@ const plans = [
   },
   {
     name: "Pro",
-    price: "$19/mo",
-    desc: "For daily scanning.",
+    price: "$89/mo",
+    desc: "Retail-grade edge.",
     features: [
       "Bigger tape + faster refresh",
       "Pattern tags (conviction / longshot / exit)",
       "Hot Markets radar (where whales concentrate)",
+      "Top Profitable Wallets (Today / 7d / 30d)",
       "CSV export + saved filters",
     ],
     cta: "Pay with crypto",
@@ -27,11 +28,12 @@ const plans = [
   },
   {
     name: "Team",
-    price: "$49/mo",
-    desc: "For small research groups.",
+    price: "$499/mo",
+    desc: "For serious research teams.",
     features: [
       "All Pro features",
       "Whale Wallets radar (top recent flow)",
+      "Copy top wallets (copy portfolio)",
       "Multiple watchlists / workspaces",
       "Shareable snapshots (URL-encoded)",
     ],
@@ -48,7 +50,7 @@ export function PricingTeaser() {
         <div className="max-w-2xl">
           <h2 className="font-heading text-3xl md:text-4xl font-bold">Pricing</h2>
           <p className="mt-3 text-muted-foreground">
-            MVP flow: you can pay in crypto and unlock Pro/Team on this device (no accounts yet).
+            Upgrade to unlock full tape limits, wallet leaderboards, and copy-style workflows.
           </p>
         </div>
 

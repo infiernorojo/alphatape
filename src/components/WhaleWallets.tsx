@@ -1,11 +1,14 @@
 import { useEffect, useMemo, useState } from "react";
 import { useQuery } from "@tanstack/react-query";
-import { ExternalLink, Users } from "lucide-react";
+import { Copy as CopyIcon, ExternalLink, Users } from "lucide-react";
+import { toast } from "sonner";
 
-import { apiTrades, type PolymarketTrade } from "@/lib/polymarket";
+import { apiPositions, apiTrades, type PolymarketTrade } from "@/lib/polymarket";
 import { Card } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
 import { getPlan, isAtLeastPro, type Plan } from "@/lib/plan";
+import { addToWatchlist } from "@/lib/watchlist";
 
 function notionalUsd(t: PolymarketTrade) {
   const v = Number(t.size) * Number(t.price);
@@ -35,6 +38,7 @@ export function WhaleWallets() {
   const [plan, setPlan] = useState<Plan>("free");
   useEffect(() => setPlan(getPlan()), []);
   const pro = isAtLeastPro(plan);
+  const team = plan === "team";
 
   const limit = pro ? 250 : 80;
   const filterAmount = pro ? 150 : 1000;
@@ -108,10 +112,7 @@ export function WhaleWallets() {
                 </div>
 
                 <div className="text-right whitespace-nowrap flex flex-col items-end gap-1">
-                  <a
-                    className="text-xs text-primary hover:underline"
-                    href={`/demo?wallet=${encodeURIComponent(r.wallet)}`}
-                  >
+                  <a className="text-xs text-primary hover:underline" href={`/demo?wallet=${encodeURIComponent(r.wallet)}`}>
                     inspect
                   </a>
                   <a
@@ -122,6 +123,27 @@ export function WhaleWallets() {
                   >
                     scan <ExternalLink className="w-3.5 h-3.5" aria-hidden="true" />
                   </a>
+
+                  {team && (
+                    <Button
+                      variant="secondary"
+                      size="sm"
+                      className="mt-1"
+                      onClick={async () => {
+                        const positions = await apiPositions({ user: r.wallet, limit: 50, sortBy: "CURRENT", sortDirection: "DESC", sizeThreshold: 1 });
+                        let added = 0;
+                        for (const p of positions) {
+                          if (!p.conditionId || !p.slug) continue;
+                          addToWatchlist({ conditionId: p.conditionId, slug: p.slug, question: p.title ?? p.slug });
+                          added += 1;
+                        }
+                        toast.success(`Copied ${added} positions → watchlist`);
+                      }}
+                    >
+                      <CopyIcon className="w-4 h-4 mr-2" aria-hidden="true" />
+                      Copy
+                    </Button>
+                  )}
                 </div>
               </div>
             ))}

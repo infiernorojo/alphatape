@@ -2,8 +2,6 @@ import { Link } from "react-router-dom";
 import { Header } from "@/components/Header";
 import { Footer } from "@/components/Footer";
 import { Button } from "@/components/ui/button";
-import { Card } from "@/components/ui/card";
-import { getPlan } from "@/lib/plan";
 
 const plans = [
   {
@@ -17,12 +15,13 @@ const plans = [
   },
   {
     name: "Pro",
-    price: "$19/mo",
-    desc: "For daily scanning.",
+    price: "$89/mo",
+    desc: "Retail-grade edge.",
     features: [
       "Bigger tape + faster refresh",
       "Pattern tags (conviction / longshot / exit)",
       "Hot Markets radar (where whales concentrate)",
+      "Top Profitable Wallets (Today / 7d / 30d)",
       "CSV export + saved filters",
       "Higher request limits",
     ],
@@ -32,13 +31,14 @@ const plans = [
   },
   {
     name: "Team",
-    price: "$49/mo",
-    desc: "For small research groups.",
+    price: "$499/mo",
+    desc: "For serious research teams.",
     features: [
       "All Pro features",
       "Whale Wallets radar (top flow)",
-      "Multiple workspaces (local)",
-      "Shareable snapshots (URL-encoded)",
+      "Copy top wallets (copy portfolio)",
+      "Multiple workspaces",
+      "Shareable snapshots",
     ],
     cta: "Pay with crypto",
     href: "/checkout?plan=team",
@@ -47,27 +47,16 @@ const plans = [
 ];
 
 export default function PricingPage() {
-  const current = getPlan();
-
   return (
     <div className="min-h-screen bg-background">
       <Header />
       <main id="main" className="pt-20">
         <section className="py-10">
           <div className="container mx-auto px-4">
-            <div className="flex items-start justify-between gap-4 flex-col md:flex-row">
-              <div>
-                <h1 className="font-heading text-3xl md:text-4xl font-bold">Pricing</h1>
-                <p className="mt-3 text-muted-foreground max-w-2xl">
-                  AlphaTape is a conversion-first MVP: real crypto checkout + immediate local unlock (no accounts yet).
-                </p>
-              </div>
-              <Card className="card-gradient border-border p-4 min-w-[220px]">
-                <div className="text-xs text-muted-foreground">Current plan</div>
-                <div className="text-lg font-bold gradient-text">{current.toUpperCase()}</div>
-                <div className="text-xs text-muted-foreground mt-1">Stored locally (frontend MVP)</div>
-              </Card>
-            </div>
+            <h1 className="font-heading text-3xl md:text-4xl font-bold">Pricing</h1>
+            <p className="mt-3 text-muted-foreground max-w-2xl">
+              Crypto-friendly access. Stablecoins are exact, other coins are priced at live USD rates.
+            </p>
 
             <div className="mt-8 grid md:grid-cols-3 gap-4">
               {plans.map((p) => (
@@ -100,12 +89,12 @@ export default function PricingPage() {
             </div>
 
             <div className="mt-10 rounded-2xl border border-border bg-card/30 p-6 text-sm text-muted-foreground">
-              <div className="font-semibold text-foreground">Why retail pays for Pro</div>
+              <div className="font-semibold text-foreground">Why retail pays</div>
               <ul className="mt-2 space-y-1">
-                <li>• You stop guessing: the tape + radars show where real size is flowing.</li>
-                <li>• Pattern tags make scanning faster (conviction vs longshot vs exits).</li>
-                <li>• Watchlists + saved filters turn “one lucky scroll” into a repeatable routine.</li>
-                <li>• CSV export is for people who want receipts and back-checks.</li>
+                <li>• Tape + radars show where real size is flowing.</li>
+                <li>• Wallet leaderboards surface who’s consistently positioned well.</li>
+                <li>• Watchlists + saved filters make it a repeatable routine (not random scrolling).</li>
+                <li>• Copy workflows (Team) turn top wallets into a one-click research feed.</li>
               </ul>
 
               <div className="mt-4">

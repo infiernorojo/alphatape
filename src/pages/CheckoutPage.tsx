@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { Checkbox } from "@/components/ui/checkbox";
 import { setPlan, type Plan } from "@/lib/plan";
+import { useCryptoUsd } from "@/hooks/useCryptoUsd";
 
 type Network = {
   id: string;
@@ -23,6 +24,8 @@ type Coin = {
   id: string;
   symbol: string;
   name: string;
+  coingeckoId: string;
+  isStable?: boolean;
   networks: Network[];
 };
 
@@ -31,6 +34,8 @@ const COINS: Coin[] = [
     id: "usdt",
     symbol: "USDT",
     name: "Tether",
+    coingeckoId: "tether",
+    isStable: true,
     networks: [
       {
         id: "trc20",
@@ -59,6 +64,8 @@ const COINS: Coin[] = [
     id: "usdc",
     symbol: "USDC",
     name: "USD Coin",
+    coingeckoId: "usd-coin",
+    isStable: true,
     networks: [
       {
         id: "polygon",
@@ -83,16 +90,125 @@ const COINS: Coin[] = [
       },
     ],
   },
+  {
+    id: "eth",
+    symbol: "ETH",
+    name: "Ethereum",
+    coingeckoId: "ethereum",
+    networks: [
+      {
+        id: "ethereum",
+        name: "Ethereum",
+        fullName: "Ethereum Mainnet",
+        address: "0x376818665bC6041fb2cb449cDa362Ed10a492e2e",
+        warning: "Ethereum fees can be high.",
+      },
+    ],
+  },
+  {
+    id: "btc",
+    symbol: "BTC",
+    name: "Bitcoin",
+    coingeckoId: "bitcoin",
+    networks: [
+      {
+        id: "bitcoin",
+        name: "Bitcoin",
+        fullName: "Bitcoin",
+        address: "bc1qmgux4hu40ltckrdxe40ffhrep2q3mrq6p056gc",
+        warning: "Send ONLY via Bitcoin network.",
+      },
+    ],
+  },
+  {
+    id: "sol",
+    symbol: "SOL",
+    name: "Solana",
+    coingeckoId: "solana",
+    networks: [
+      {
+        id: "solana",
+        name: "Solana",
+        fullName: "Solana",
+        address: "87TK1xZ7xopNvaF2k83iuEvqaDM31nKGqf94DGUeAYGp",
+        warning: "Send ONLY via Solana network.",
+      },
+    ],
+  },
+  {
+    id: "trx",
+    symbol: "TRX",
+    name: "TRON",
+    coingeckoId: "tron",
+    networks: [
+      {
+        id: "tron",
+        name: "TRON",
+        fullName: "Tron",
+        address: "TKJWNpZiH1zskhZ9QWagc1Y7AKewWb11C4",
+        warning: "Send ONLY via Tron network.",
+      },
+    ],
+  },
+  {
+    id: "bnb",
+    symbol: "BNB",
+    name: "BNB",
+    coingeckoId: "binancecoin",
+    networks: [
+      {
+        id: "bsc",
+        name: "BSC",
+        fullName: "BNB Chain (BEP20)",
+        address: "0x376818665bC6041fb2cb449cDa362Ed10a492e2e",
+        warning: "Send ONLY via BNB Chain (BEP20).",
+      },
+    ],
+  },
+  {
+    id: "matic",
+    symbol: "MATIC",
+    name: "Polygon",
+    coingeckoId: "polygon-pos",
+    networks: [
+      {
+        id: "polygon",
+        name: "Polygon",
+        fullName: "Polygon (PoS)",
+        address: "0x376818665bC6041fb2cb449cDa362Ed10a492e2e",
+        warning: "Send ONLY via Polygon (PoS).",
+      },
+    ],
+  },
 ];
 
 const PRICES: Record<Exclude<Plan, "free">, number> = {
-  pro: 19,
-  team: 49,
+  pro: 89,
+  team: 499,
 };
 
 function formatAddress(addr: string) {
   if (addr.startsWith("0x")) return `${addr.slice(0, 6)}…${addr.slice(-4)}`;
-  return `${addr.slice(0, 4)}…${addr.slice(-4)}`;
+  return `${addr.slice(0, 6)}…${addr.slice(-4)}`;
+}
+
+function explorerAddressUrl(netId: string, address: string) {
+  if (netId === "bitcoin") return `https://blockstream.info/address/${address}`;
+  if (netId === "solana") return `https://solscan.io/account/${address}`;
+  if (netId === "tron" || netId === "trc20") return `https://tronscan.org/#/address/${address}`;
+  if (netId === "bsc") return `https://bscscan.com/address/${address}`;
+  if (netId === "erc20" || netId === "ethereum") return `https://etherscan.io/address/${address}`;
+  // default to polygon
+  return `https://polygonscan.com/address/${address}`;
+}
+
+function explorerLabel(netId: string) {
+  if (netId === "bitcoin") return "Blockstream";
+  if (netId === "solana") return "Solscan";
+  if (netId === "tron" || netId === "trc20") return "Tronscan";
+  if (netId === "bsc") return "BscScan";
+  if (netId === "erc20" || netId === "ethereum") return "Etherscan";
+  return "Polygonscan";
 }
 
 export default function CheckoutPage() {
@@ -105,12 +221,23 @@ export default function CheckoutPage() {
     return PRICES.pro;
   }, [plan]);
 
+  const rates = useCryptoUsd();
+
   const [coin, setCoin] = useState<Coin>(COINS[0]);
   const [networkId, setNetworkId] = useState<string>(COINS[0].networks[0].id);
   const [ack, setAck] = useState(false);
   const [copied, setCopied] = useState(false);
 
   const network = useMemo(() => coin.networks.find((n) => n.id === networkId) ?? coin.networks[0], [coin, networkId]);
+
+  const usdPerCoin = rates.data?.[coin.coingeckoId]?.usd;
+  const payAmount = useMemo(() => {
+    if (coin.isStable) return { text: `${usdAmount} ${coin.symbol}`, approx: false };
+    if (!usdPerCoin || usdPerCoin <= 0) return { text: `~ ${usdAmount} ${coin.symbol}`, approx: true };
+    const amt = usdAmount / usdPerCoin;
+    const digits = amt >= 1 ? 4 : 6;
+    return { text: `~ ${amt.toFixed(digits)} ${coin.symbol}`, approx: true };
+  }, [coin.isStable, coin.symbol, usdAmount, usdPerCoin]);
 
   const copy = async () => {
     await navigator.clipboard.writeText(network.address);
@@ -145,8 +272,8 @@ export default function CheckoutPage() {
                 </Link>
                 <h1 className="font-heading text-3xl md:text-4xl font-bold mt-3">Checkout</h1>
                 <p className="mt-2 text-muted-foreground">
-                  Pay with stablecoins (recommended). This is a frontend MVP: after sending, click “I sent payment” to
-                  unlock on this device.
+                  Pay with crypto (stablecoins recommended). This is a frontend MVP: after sending, click “I sent payment”
+                  to unlock on this device.
                 </p>
               </div>
               <div className="hidden md:block">
@@ -209,8 +336,14 @@ export default function CheckoutPage() {
                 <div className="p-4 md:p-5">
                   <div className="text-sm font-semibold">2) Send payment</div>
                   <div className="text-xs text-muted-foreground">
-                    Amount: <span className="text-foreground font-semibold">{usdAmount} {coin.symbol}</span> (recommended)
+                    Amount: <span className="text-foreground font-semibold">{payAmount.text}</span>
+                    {coin.isStable ? "" : " (approx)"}
                   </div>
+                  {!coin.isStable && (
+                    <div className="text-[11px] text-muted-foreground mt-1">
+                      Live USD price source: CoinGecko (via /api/rates). Stablecoins are exact.
+                    </div>
+                  )}
 
                   <div className="mt-4 grid md:grid-cols-[260px_1fr] gap-4 items-start">
                     <div className="p-4 bg-white rounded-xl w-fit">
@@ -230,17 +363,15 @@ export default function CheckoutPage() {
                       <div className="mt-2 text-[11px] text-muted-foreground break-all">{network.address}</div>
 
                       <div className="mt-4 text-xs text-muted-foreground">
-                        Verify address and tx on explorer:
-                        {network.address.startsWith("0x") ? (
-                          <a
-                            className="text-primary inline-flex items-center gap-1 ml-2 hover:underline"
-                            href={`https://polygonscan.com/address/${network.address}`}
-                            target="_blank"
-                            rel="noreferrer"
-                          >
-                            Polygonscan <ExternalLink className="w-3.5 h-3.5" aria-hidden="true" />
-                          </a>
-                        ) : null}
+                        Verify address on explorer:
+                        <a
+                          className="text-primary inline-flex items-center gap-1 ml-2 hover:underline"
+                          href={explorerAddressUrl(network.id, network.address)}
+                          target="_blank"
+                          rel="noreferrer"
+                        >
+                          {explorerLabel(network.id)} <ExternalLink className="w-3.5 h-3.5" aria-hidden="true" />
+                        </a>
                       </div>
 
                       <div className="mt-5 flex items-center gap-3">

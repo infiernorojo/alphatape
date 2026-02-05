@@ -7,8 +7,10 @@ import { LiveTape } from "@/components/LiveTape";
 import { TrendingMarkets } from "@/components/TrendingMarkets";
 import { HotMarkets } from "@/components/HotMarkets";
 import { WhaleWallets } from "@/components/WhaleWallets";
+import { TopProfitableWallets } from "@/components/TopProfitableWallets";
 import { WalletLookup } from "@/components/WalletLookup";
 import { WatchlistPanel } from "@/components/WatchlistPanel";
+import { TopProfitableWallets } from "@/components/TopProfitableWallets";
 import { Button } from "@/components/ui/button";
 
 import { getPlan, isAtLeastPro, type Plan } from "@/lib/plan";
@@ -64,6 +66,18 @@ export default function DemoPage() {
               <div className="mt-4 grid lg:grid-cols-2 gap-4">
                 <HotMarkets />
                 <WhaleWallets />
+              </div>
+            )}
+
+            {pro && (
+              <div className="mt-4">
+                <TopProfitableWallets />
+              </div>
+            )}
+
+            {pro && (
+              <div className="mt-4">
+                <TopProfitableWallets />
               </div>
             )}
 
