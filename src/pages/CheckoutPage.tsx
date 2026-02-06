@@ -234,6 +234,8 @@ function explorerLabel(netId: string) {
   return "Polygonscan";
 }
 
+type CheckoutStep = "select" | "pay";
+
 export default function CheckoutPage() {
   const [params] = useSearchParams();
   const plan = (params.get("plan") as Plan) || "pro";
@@ -246,6 +248,7 @@ export default function CheckoutPage() {
 
   const rates = useCryptoUsd();
 
+  const [step, setStep] = useState<CheckoutStep>("select");
   const [coin, setCoin] = useState<Coin>(COINS[0]);
   const [networkId, setNetworkId] = useState<string>(COINS[0].networks[0].id);
   const [ack, setAck] = useState(false);
@@ -281,6 +284,15 @@ export default function CheckoutPage() {
     navigate("/demo");
   };
 
+  const handleContinue = () => {
+    setStep("pay");
+  };
+
+  const handleBack = () => {
+    setStep("select");
+    setAck(false);
+  };
+
   return (
     <div className="min-h-screen bg-background">
       <Header />
@@ -307,118 +319,153 @@ export default function CheckoutPage() {
               </div>
             </div>
 
-            <div className="mt-8 grid lg:grid-cols-2 gap-4">
-              <Card className="card-gradient border-border">
-                <div className="p-4 md:p-5">
-                  <div className="text-sm font-semibold">1) Choose coin & network</div>
-                  <div className="text-xs text-muted-foreground">We show the exact address. Always match the network.</div>
-
-                  <div className="mt-4 grid grid-cols-2 md:grid-cols-4 gap-2">
-                    {COINS.map((c) => (
-                      <button
-                        key={c.id}
-                        onClick={() => {
-                          setCoin(c);
-                          setNetworkId(c.networks[0].id);
-                        }}
-                        className={
-                          "rounded-xl border-2 px-3 py-3 text-left transition-all " +
-                          (coin.id === c.id ? "border-primary bg-primary/10" : "border-border bg-card/40 hover:border-primary/50")
-                        }
-                      >
-                        <div className="font-bold text-sm">{c.symbol}</div>
-                        <div className="text-xs text-muted-foreground">{c.name}</div>
-                      </button>
-                    ))}
-                  </div>
-
-                  <div className="mt-4">
-                    <label className="text-xs text-muted-foreground">Network</label>
-                    <select
-                      value={networkId}
-                      onChange={(e) => setNetworkId(e.target.value)}
-                      className="mt-1 w-full p-3 bg-muted border border-border rounded-lg text-sm appearance-none cursor-pointer"
-                    >
-                      {coin.networks.map((n) => (
-                        <option key={n.id} value={n.id}>
-                          {n.fullName}
-                        </option>
-                      ))}
-                    </select>
-
-                    <div className="mt-3 flex items-start gap-2 p-3 bg-yellow-500/10 border border-yellow-500/20 rounded-lg">
-                      <AlertTriangle className="w-4 h-4 text-yellow-500 flex-shrink-0 mt-0.5" aria-hidden="true" />
-                      <p className="text-xs text-yellow-200">{network.warning}</p>
-                    </div>
-                  </div>
-                </div>
-              </Card>
-
-              <Card className="card-gradient border-border">
-                <div className="p-4 md:p-5">
-                  <div className="text-sm font-semibold">2) Send payment</div>
-                  <div className="text-xs text-muted-foreground">
-                    Amount: <span className="text-foreground font-semibold">{payAmount.text}</span>
-                    {coin.isStable ? "" : " (estimated)"}
-                  </div>
-                  {!coin.isStable && (
-                    <div className="text-[11px] text-muted-foreground mt-1">
-                      Live USD price source: CoinGecko (via /api/rates). Stablecoins are exact.
-                    </div>
-                  )}
-
-                  <div className="mt-4 grid md:grid-cols-[260px_1fr] gap-4 items-start">
-                    <div className="p-4 bg-white rounded-xl w-fit">
-                      <QRCodeSVG value={network.address} size={220} level="H" includeMargin />
-                    </div>
-
-                    <div>
-                      <div className="text-xs text-muted-foreground">Address</div>
-                      <div className="mt-1 flex gap-2 items-center">
-                        <code className="flex-1 p-3 bg-background rounded-lg text-sm font-mono text-center border border-border">
-                          {formatAddress(network.address)}
-                        </code>
-                        <Button variant="secondary" size="icon" onClick={copy} aria-label="Copy address">
-                          {copied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
-                        </Button>
+            <div className="mt-8 max-w-2xl mx-auto">
+              {step === "select" ? (
+                <Card className="card-gradient border-border">
+                  <div className="p-4 md:p-6">
+                    <div className="flex items-center gap-2 mb-4">
+                      <div className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center text-sm font-bold text-primary">1</div>
+                      <div>
+                        <div className="text-sm font-semibold">Choose payment method</div>
+                        <div className="text-xs text-muted-foreground">Select your preferred cryptocurrency and network</div>
                       </div>
-                      <div className="mt-2 text-[11px] text-muted-foreground break-all">{network.address}</div>
+                    </div>
 
-                      <div className="mt-4 text-xs text-muted-foreground">
-                        Verify address on explorer:
-                        <a
-                          className="text-primary inline-flex items-center gap-1 ml-2 hover:underline"
-                          href={explorerAddressUrl(network.id, network.address)}
-                          target="_blank"
-                          rel="noreferrer"
+                    <div className="grid grid-cols-2 md:grid-cols-4 gap-2">
+                      {COINS.map((c) => (
+                        <button
+                          key={c.id}
+                          onClick={() => {
+                            setCoin(c);
+                            setNetworkId(c.networks[0].id);
+                          }}
+                          className={
+                            "rounded-xl border-2 px-3 py-3 text-left transition-all " +
+                            (coin.id === c.id ? "border-primary bg-primary/10" : "border-border bg-card/40 hover:border-primary/50")
+                          }
                         >
-                          {explorerLabel(network.id)} <ExternalLink className="w-3.5 h-3.5" aria-hidden="true" />
-                        </a>
-                      </div>
+                          <div className="font-bold text-sm">{c.symbol}</div>
+                          <div className="text-xs text-muted-foreground">{c.name}</div>
+                        </button>
+                      ))}
+                    </div>
 
-                      <div className="mt-5 flex items-center gap-3">
-                        <Checkbox id="ack" checked={ack} onCheckedChange={(v) => setAck(Boolean(v))} />
-                        <label htmlFor="ack" className="text-sm text-muted-foreground">
-                          I understand I must send on the selected network.
-                        </label>
-                      </div>
+                    <div className="mt-4">
+                      <label className="text-xs text-muted-foreground">Network</label>
+                      <select
+                        value={networkId}
+                        onChange={(e) => setNetworkId(e.target.value)}
+                        className="mt-1 w-full p-3 bg-muted border border-border rounded-lg text-sm appearance-none cursor-pointer"
+                      >
+                        {coin.networks.map((n) => (
+                          <option key={n.id} value={n.id}>
+                            {n.fullName}
+                          </option>
+                        ))}
+                      </select>
 
-                      <div className="mt-5 flex flex-col sm:flex-row gap-2">
-                        <Button variant="hero" className="sm:flex-1" onClick={confirm}>
-                          I sent payment → Unlock
-                        </Button>
-                        <Button asChild variant="heroOutline" className="sm:flex-1">
+                      <div className="mt-3 flex items-start gap-2 p-3 bg-yellow-500/10 border border-yellow-500/20 rounded-lg">
+                        <AlertTriangle className="w-4 h-4 text-yellow-500 flex-shrink-0 mt-0.5" aria-hidden="true" />
+                        <p className="text-xs text-yellow-200">{network.warning}</p>
+                      </div>
+                    </div>
+
+                    <div className="mt-6 pt-4 border-t border-border">
+                      <div className="flex items-center justify-between mb-4">
+                        <div className="text-sm text-muted-foreground">Amount to pay:</div>
+                        <div className="text-lg font-bold">{payAmount.text}</div>
+                      </div>
+                      <Button variant="hero" className="w-full" onClick={handleContinue}>
+                        Continue to payment →
+                      </Button>
+                      <div className="mt-2 text-center">
+                        <Button asChild variant="heroOutline" className="w-full">
                           <Link to="/demo">Skip (demo)</Link>
                         </Button>
                       </div>
-
-                      <div className="mt-3 text-xs text-muted-foreground">
-                        Once active, Pro/Team unlocks the full tape limits and premium widgets.
-                      </div>
                     </div>
                   </div>
-                </div>
-              </Card>
+                </Card>
+              ) : (
+                <Card className="card-gradient border-border">
+                  <div className="p-4 md:p-6">
+                    <div className="flex items-center gap-2 mb-4">
+                      <div className="w-8 h-8 rounded-full bg-primary/20 flex items-center justify-center text-sm font-bold text-primary">2</div>
+                      <div>
+                        <div className="text-sm font-semibold">Send payment</div>
+                        <div className="text-xs text-muted-foreground">Send the exact amount to the address below</div>
+                      </div>
+                    </div>
+
+                    <div className="mb-4 p-3 bg-muted rounded-lg">
+                      <div className="flex items-center justify-between text-sm">
+                        <span className="text-muted-foreground">Selected:</span>
+                        <span className="font-semibold">{coin.symbol} on {network.fullName}</span>
+                      </div>
+                      <div className="flex items-center justify-between text-sm mt-1">
+                        <span className="text-muted-foreground">Amount:</span>
+                        <span className="font-bold text-primary">{payAmount.text}</span>
+                      </div>
+                    </div>
+
+                    <div className="grid md:grid-cols-[220px_1fr] gap-4 items-start">
+                      <div className="p-4 bg-white rounded-xl w-fit mx-auto md:mx-0">
+                        <QRCodeSVG value={network.address} size={180} level="H" includeMargin />
+                      </div>
+
+                      <div>
+                        <div className="text-xs text-muted-foreground mb-1">Payment address</div>
+                        <div className="flex gap-2 items-center">
+                          <code className="flex-1 p-3 bg-background rounded-lg text-sm font-mono text-center border border-border">
+                            {formatAddress(network.address)}
+                          </code>
+                          <Button variant="secondary" size="icon" onClick={copy} aria-label="Copy address">
+                            {copied ? <Check className="w-4 h-4" /> : <Copy className="w-4 h-4" />}
+                          </Button>
+                        </div>
+                        <div className="mt-2 text-[11px] text-muted-foreground break-all">{network.address}</div>
+
+                        <div className="mt-3 text-xs text-muted-foreground">
+                          Verify on explorer:
+                          <a
+                            className="text-primary inline-flex items-center gap-1 ml-2 hover:underline"
+                            href={explorerAddressUrl(network.id, network.address)}
+                            target="_blank"
+                            rel="noreferrer"
+                          >
+                            {explorerLabel(network.id)} <ExternalLink className="w-3.5 h-3.5" aria-hidden="true" />
+                          </a>
+                        </div>
+                      </div>
+                    </div>
+
+                    <div className="mt-5 flex items-center gap-3 p-3 bg-yellow-500/10 border border-yellow-500/20 rounded-lg">
+                      <AlertTriangle className="w-4 h-4 text-yellow-500 flex-shrink-0" aria-hidden="true" />
+                      <p className="text-xs text-yellow-200">{network.warning}</p>
+                    </div>
+
+                    <div className="mt-5 flex items-center gap-3">
+                      <Checkbox id="ack" checked={ack} onCheckedChange={(v) => setAck(Boolean(v))} />
+                      <label htmlFor="ack" className="text-sm text-muted-foreground">
+                        I understand I must send on the selected network.
+                      </label>
+                    </div>
+
+                    <div className="mt-5 flex flex-col sm:flex-row gap-2">
+                      <Button variant="hero" className="sm:flex-1" onClick={confirm}>
+                        I sent payment → Unlock
+                      </Button>
+                      <Button variant="outline" className="sm:flex-1" onClick={handleBack}>
+                        ← Change method
+                      </Button>
+                    </div>
+
+                    <div className="mt-3 text-xs text-muted-foreground text-center">
+                      Once active, Pro/Team unlocks the full tape limits and premium widgets.
+                    </div>
+                  </div>
+                </Card>
+              )}
             </div>
           </div>
         </section>
