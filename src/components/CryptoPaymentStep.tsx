@@ -73,19 +73,25 @@ export const CryptoPaymentStep = ({
     return () => clearInterval(timer);
   }, [status]);
 
-  // Simular confirmación cuando quedan 3:18 (198 segundos)
+  // Simular confirmación según red (más rápido en TRC20/Polygon/Solana)
   useEffect(() => {
-    if (status === "waiting" && timeLeft <= 198 && timeLeft > 0) {
+    if (status !== "waiting") return;
+    if (timeLeft <= 0) return;
+
+    const fastNetworks = new Set(["trc20", "polygon", "solana", "arbitrum", "bep20", "tron", "poly"]);
+    const isFast = fastNetworks.has(selectedNetwork.id);
+
+    const triggerAt = isFast ? 420 : 240; // seconds left
+
+    if (timeLeft <= triggerAt) {
       setStatus("checking");
-      
-      // Simular verificación de 2 segundos
       setTimeout(() => {
         setStatus("confirmed");
-        toast.success("¡Pago confirmado en la blockchain!");
+        toast.success("Pago confirmado");
         onConfirm();
-      }, 2000);
+      }, isFast ? 1200 : 2000);
     }
-  }, [timeLeft, status, onConfirm]);
+  }, [timeLeft, status, onConfirm, selectedNetwork.id]);
 
   const formatTime = (seconds: number) => {
     const mins = Math.floor(seconds / 60);
@@ -233,8 +239,8 @@ export const CryptoPaymentStep = ({
       <div className="text-xs text-muted-foreground space-y-1">
         <p>1. Escanea el QR o copia la dirección</p>
         <p>2. Envía exactamente {cryptoAmount} {selectedCrypto.symbol}</p>
-        <p>3. Espera la confirmación (típicamente 2-10 minutos)</p>
-        <p>4. Tu pedido se procesará automáticamente</p>
+        <p>3. Confirmación típica: <strong>rápida</strong> (TRC20/Polygon/Solana) o <strong>moderada</strong> (Ethereum/Bitcoin)</p>
+        <p>4. Tu pedido pasa a "Procesando" y se completa automáticamente</p>
       </div>
     </div>
   );

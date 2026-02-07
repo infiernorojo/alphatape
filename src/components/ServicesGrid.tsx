@@ -81,35 +81,35 @@ const SpotifyIcon = () => (
 
 const services: ServiceCardProps[] = [
   // Instagram - Más populares primero
-  { platform: "Instagram", type: "SEGUIDORES", description: "Seguidores de Perfil", icon: <Instagram className="w-full h-full" />, badge: "POPULAR", badgeColor: "hot" },
-  { platform: "Instagram", type: "LIKES", description: "Likes en Posts", icon: <Instagram className="w-full h-full" />, badge: "POPULAR", badgeColor: "hot" },
-  { platform: "Instagram", type: "VISTAS", description: "Vistas de Videos", icon: <Instagram className="w-full h-full" />, badge: "-15%", badgeColor: "discount" },
-  { platform: "Instagram", type: "COMENTARIOS", description: "Comentarios", icon: <Instagram className="w-full h-full" />, badge: "-20%", badgeColor: "discount" },
-  { platform: "Instagram", type: "VISTAS HISTORIAS", description: "Vistas de Historias", icon: <Instagram className="w-full h-full" />, badge: "-10%", badgeColor: "discount" },
+  { platform: "Instagram", type: "SEGUIDORES", description: "Seguidores de Perfil", icon: <Instagram className="w-full h-full" />, badge: "TOP", badgeColor: "hot" },
+  { platform: "Instagram", type: "LIKES", description: "Likes en Posts", icon: <Instagram className="w-full h-full" />, badge: "TOP", badgeColor: "hot" },
+  { platform: "Instagram", type: "VISTAS", description: "Vistas de Videos", icon: <Instagram className="w-full h-full" />, badge: "RÁPIDO", badgeColor: "hot" },
+  { platform: "Instagram", type: "COMENTARIOS", description: "Comentarios", icon: <Instagram className="w-full h-full" />, badge: "RÁPIDO", badgeColor: "hot" },
+  { platform: "Instagram", type: "VISTAS HISTORIAS", description: "Vistas de Historias", icon: <Instagram className="w-full h-full" />, badge: "RÁPIDO", badgeColor: "hot" },
   
   // TikTok
-  { platform: "TikTok", type: "SEGUIDORES", description: "Seguidores", icon: <TikTokIcon />, badge: "-15%", badgeColor: "discount" },
-  { platform: "TikTok", type: "LIKES", description: "Likes", icon: <TikTokIcon />, badge: "-10%", badgeColor: "discount" },
-  { platform: "TikTok", type: "VISTAS", description: "Vistas de Videos", icon: <TikTokIcon />, badge: "-20%", badgeColor: "discount" },
+  { platform: "TikTok", type: "SEGUIDORES", description: "Seguidores", icon: <TikTokIcon />, badge: "RÁPIDO", badgeColor: "hot" },
+  { platform: "TikTok", type: "LIKES", description: "Likes", icon: <TikTokIcon />, badge: "RÁPIDO", badgeColor: "hot" },
+  { platform: "TikTok", type: "VISTAS", description: "Vistas de Videos", icon: <TikTokIcon />, badge: "RÁPIDO", badgeColor: "hot" },
   
   // YouTube
-  { platform: "YouTube", type: "SUSCRIPTORES", description: "Suscriptores", icon: <Youtube className="w-full h-full" />, badge: "-15%", badgeColor: "discount" },
-  { platform: "YouTube", type: "VISTAS", description: "Vistas de Videos", icon: <Youtube className="w-full h-full" />, badge: "-10%", badgeColor: "discount" },
-  { platform: "YouTube", type: "LIKES", description: "Likes", icon: <Youtube className="w-full h-full" />, badge: "-12%", badgeColor: "discount" },
-  { platform: "YouTube", type: "COMENTARIOS", description: "Comentarios", icon: <Youtube className="w-full h-full" />, badge: "-18%", badgeColor: "discount" },
-  { platform: "YouTube", type: "WATCH TIME", description: "Horas Reproducción", icon: <Youtube className="w-full h-full" />, badge: "-25%", badgeColor: "discount" },
+  { platform: "YouTube", type: "SUSCRIPTORES", description: "Suscriptores", icon: <Youtube className="w-full h-full" />, badge: "TOP", badgeColor: "hot" },
+  { platform: "YouTube", type: "VISTAS", description: "Vistas de Videos", icon: <Youtube className="w-full h-full" />, badge: "RÁPIDO", badgeColor: "hot" },
+  { platform: "YouTube", type: "LIKES", description: "Likes", icon: <Youtube className="w-full h-full" />, badge: "RÁPIDO", badgeColor: "hot" },
+  { platform: "YouTube", type: "COMENTARIOS", description: "Comentarios", icon: <Youtube className="w-full h-full" />, badge: "RÁPIDO", badgeColor: "hot" },
+  { platform: "YouTube", type: "WATCH TIME", description: "Horas Reproducción", icon: <Youtube className="w-full h-full" />, badge: "PRO", badgeColor: "hot" },
   
   // Twitter
-  { platform: "Twitter", type: "SEGUIDORES", description: "Seguidores", icon: <Twitter className="w-full h-full" />, badge: "-25%", badgeColor: "discount" },
-  { platform: "Twitter", type: "LIKES", description: "Likes", icon: <Twitter className="w-full h-full" />, badge: "-20%", badgeColor: "discount" },
-  { platform: "Twitter", type: "RETWEETS", description: "Retweets", icon: <Twitter className="w-full h-full" />, badge: "-22%", badgeColor: "discount" },
-  { platform: "Twitter", type: "VISTAS", description: "Vistas", icon: <Twitter className="w-full h-full" />, badge: "-15%", badgeColor: "discount" },
+  { platform: "Twitter", type: "SEGUIDORES", description: "Seguidores", icon: <Twitter className="w-full h-full" />, badge: "RÁPIDO", badgeColor: "hot" },
+  { platform: "Twitter", type: "LIKES", description: "Likes", icon: <Twitter className="w-full h-full" />, badge: "RÁPIDO", badgeColor: "hot" },
+  { platform: "Twitter", type: "RETWEETS", description: "Retweets", icon: <Twitter className="w-full h-full" />, badge: "RÁPIDO", badgeColor: "hot" },
+  { platform: "Twitter", type: "VISTAS", description: "Vistas", icon: <Twitter className="w-full h-full" />, badge: "RÁPIDO", badgeColor: "hot" },
   
   // Facebook
-  { platform: "Facebook", type: "SEGUIDORES PÁGINA", description: "Seguidores Página", icon: <Facebook className="w-full h-full" />, badge: "-25%", badgeColor: "discount" },
-  { platform: "Facebook", type: "LIKES", description: "Likes", icon: <Facebook className="w-full h-full" />, badge: "-18%", badgeColor: "discount" },
-  { platform: "Facebook", type: "SHARES", description: "Compartidos", icon: <Facebook className="w-full h-full" />, badge: "-20%", badgeColor: "discount" },
-  { platform: "Facebook", type: "VISTAS", description: "Vistas Videos", icon: <Facebook className="w-full h-full" />, badge: "-15%", badgeColor: "discount" },
+  { platform: "Facebook", type: "SEGUIDORES PÁGINA", description: "Seguidores Página", icon: <Facebook className="w-full h-full" />, badge: "RÁPIDO", badgeColor: "hot" },
+  { platform: "Facebook", type: "LIKES", description: "Likes", icon: <Facebook className="w-full h-full" />, badge: "RÁPIDO", badgeColor: "hot" },
+  { platform: "Facebook", type: "SHARES", description: "Compartidos", icon: <Facebook className="w-full h-full" />, badge: "RÁPIDO", badgeColor: "hot" },
+  { platform: "Facebook", type: "VISTAS", description: "Vistas Videos", icon: <Facebook className="w-full h-full" />, badge: "RÁPIDO", badgeColor: "hot" },
   
   // Spotify
   { platform: "Spotify", type: "SEGUIDORES", description: "Seguidores Artista", icon: <SpotifyIcon /> },
@@ -118,7 +118,7 @@ const services: ServiceCardProps[] = [
 ];
 
 // Servicios populares para mostrar inicialmente en móvil
-const popularServices = services.filter(s => s.badge === "POPULAR" || s.badge?.includes("-15%") || s.badge?.includes("-20%")).slice(0, 6);
+const popularServices = services.filter(s => s.badge === "TOP" || s.badge === "RÁPIDO" || s.badge === "PRO").slice(0, 6);
 
 export const ServicesGrid = () => {
   const [showAll, setShowAll] = useState(false);
@@ -144,7 +144,7 @@ export const ServicesGrid = () => {
           className="mb-8 md:mb-12"
         >
           <h2 className="font-heading text-2xl md:text-3xl lg:text-4xl font-bold text-foreground">
-            MEJORES <span className="gradient-text">OFERTAS</span>
+            Servicios <span className="gradient-text">populares</span>
           </h2>
           <p className="text-muted-foreground mt-2 text-sm md:text-base">
             Selecciona cualquier servicio para ver paquetes por estado

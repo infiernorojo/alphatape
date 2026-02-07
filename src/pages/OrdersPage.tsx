@@ -15,10 +15,11 @@ import {
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
 import { useAuth } from "@/contexts/AuthContext";
+import { getOrderTimeline } from "@/lib/orderTimeline";
 
 const statusConfig = {
   pending: {
-    label: "Pendiente",
+    label: "Recibido",
     color: "bg-yellow-500/10 text-yellow-500 border-yellow-500/20",
     icon: Clock,
   },
@@ -216,12 +217,13 @@ const OrdersPage = () => {
                             {order.paymentMethod === "card" ? (
                               <>
                                 <CreditCard className="w-4 h-4" />
-                                Tarjeta de crédito/débito
+                                Tarjeta
                               </>
                             ) : (
                               <>
                                 <Bitcoin className="w-4 h-4" />
-                                Bitcoin
+                                {order.paymentDetails?.cryptoSymbol || "Cripto"}
+                                {order.paymentDetails?.networkName ? ` • ${order.paymentDetails.networkName}` : ""}
                               </>
                             )}
                           </div>
@@ -236,58 +238,28 @@ const OrdersPage = () => {
                         {/* Status Timeline */}
                         <div className="pt-4 border-t border-border">
                           <h4 className="font-bold mb-3">Estado del Pedido</h4>
-                          <div className="flex items-center gap-2">
-                            <div className="flex-1 flex items-center">
-                              <div className="w-8 h-8 rounded-full bg-green-500 flex items-center justify-center">
-                                <CheckCircle className="w-4 h-4 text-white" />
+
+                          {(() => {
+                            const timeline = getOrderTimeline(order.createdAt, order.status);
+                            return (
+                              <div className="space-y-2">
+                                {timeline.map((ev) => (
+                                  <div key={ev.label} className="flex items-center justify-between text-sm">
+                                    <div className="flex items-center gap-2">
+                                      <div className={`w-2.5 h-2.5 rounded-full ${
+                                        ev.status === "completed" ? "bg-green-500" :
+                                        ev.status === "processing" ? "bg-blue-500" :
+                                        ev.status === "cancelled" ? "bg-red-500" :
+                                        "bg-yellow-500"
+                                      }`} />
+                                      <span className="font-medium">{ev.label}</span>
+                                    </div>
+                                    <span className="text-xs text-muted-foreground">{formatDate(ev.at)}</span>
+                                  </div>
+                                ))}
                               </div>
-                              <div className="flex-1 h-1 bg-green-500 mx-2" />
-                              <div
-                                className={`w-8 h-8 rounded-full flex items-center justify-center ${
-                                  order.status === "processing" ||
-                                  order.status === "completed"
-                                    ? "bg-green-500"
-                                    : "bg-muted"
-                                }`}
-                              >
-                                <Package
-                                  className={`w-4 h-4 ${
-                                    order.status === "processing" ||
-                                    order.status === "completed"
-                                      ? "text-white"
-                                      : "text-muted-foreground"
-                                  }`}
-                                />
-                              </div>
-                              <div
-                                className={`flex-1 h-1 mx-2 ${
-                                  order.status === "completed"
-                                    ? "bg-green-500"
-                                    : "bg-muted"
-                                }`}
-                              />
-                              <div
-                                className={`w-8 h-8 rounded-full flex items-center justify-center ${
-                                  order.status === "completed"
-                                    ? "bg-green-500"
-                                    : "bg-muted"
-                                }`}
-                              >
-                                <CheckCircle
-                                  className={`w-4 h-4 ${
-                                    order.status === "completed"
-                                      ? "text-white"
-                                      : "text-muted-foreground"
-                                  }`}
-                                />
-                              </div>
-                            </div>
-                          </div>
-                          <div className="flex justify-between text-xs text-muted-foreground mt-2">
-                            <span>Recibido</span>
-                            <span>Procesando</span>
-                            <span>Completado</span>
-                          </div>
+                            );
+                          })()}
                         </div>
                       </div>
                     </motion.div>

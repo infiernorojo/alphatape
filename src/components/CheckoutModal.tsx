@@ -119,6 +119,10 @@ export const CheckoutModal = ({ isOpen, onClose }: CheckoutModalProps) => {
       items: orderItems,
       email,
       paymentMethod: "crypto",
+      paymentDetails: {
+        cryptoSymbol: selectedCrypto?.symbol,
+        networkName: selectedNetwork?.fullName,
+      },
       totalPrice,
       status: "completed" as const,
     };
@@ -214,19 +218,19 @@ export const CheckoutModal = ({ isOpen, onClose }: CheckoutModalProps) => {
                     Garantía
                   </span>
                   <span className="flex items-center gap-1">
-                    <Users className="w-3 h-3 text-purple-500" />
-                    +1.4M Clientes
+                    <Users className="w-3 h-3 text-sky-500" />
+                    Inicio 5–15 min
                   </span>
                 </div>
               )}
 
-              {/* Urgency Indicator */}
+              {/* Delivery note */}
               {currentStep === "details" && (
-                <div className="bg-orange-500/10 border border-orange-500/20 rounded-lg p-3 flex items-center gap-3">
-                  <Timer className="w-5 h-5 text-orange-500" />
+                <div className="bg-emerald-500/10 border border-emerald-500/20 rounded-lg p-3 flex items-center gap-3">
+                  <Timer className="w-5 h-5 text-emerald-500" />
                   <div className="flex-1">
-                    <p className="text-sm font-medium text-orange-600">¡Oferta por tiempo limitado!</p>
-                    <p className="text-xs text-muted-foreground">17 personas están viendo este servicio ahora</p>
+                    <p className="text-sm font-medium text-emerald-600">Inicio de entrega rápido</p>
+                    <p className="text-xs text-muted-foreground">La mayoría de órdenes inician en 5–15 min (según servicio y cola).</p>
                   </div>
                 </div>
               )}

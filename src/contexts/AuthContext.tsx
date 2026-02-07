@@ -20,7 +20,11 @@ export interface Order {
   }[];
   totalPrice: number;
   status: "pending" | "processing" | "completed" | "cancelled";
-  paymentMethod: "card" | "bitcoin";
+  paymentMethod: "card" | "crypto";
+  paymentDetails?: {
+    cryptoSymbol?: string;
+    networkName?: string;
+  };
   createdAt: string;
   email: string;
 }

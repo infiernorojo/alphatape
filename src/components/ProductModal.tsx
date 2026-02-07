@@ -126,11 +126,11 @@ export const ProductModal = ({
             </div>
 
             <div className="flex-1 overflow-y-auto p-4 md:p-6">
-              {/* Urgency Badge */}
-              <div className="mb-4 bg-orange-500/10 border border-orange-500/20 rounded-lg p-2.5 flex items-center gap-2">
-                <Zap className="w-4 h-4 text-orange-500" />
-                <p className="text-xs text-orange-600">
-                  <strong>15% OFF</strong> en tu primera compra - Solo hoy
+              {/* Delivery estimate */}
+              <div className="mb-4 bg-emerald-500/10 border border-emerald-500/20 rounded-lg p-2.5 flex items-center gap-2">
+                <Zap className="w-4 h-4 text-emerald-500" />
+                <p className="text-xs text-emerald-600">
+                  <strong>Inicio rápido:</strong> la entrega comienza típicamente en <strong>5–15 minutos</strong>.
                 </p>
               </div>
 

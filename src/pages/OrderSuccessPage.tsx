@@ -66,7 +66,7 @@ const OrderSuccessPage = () => {
             ¡Pago Exitoso!
           </h1>
           <p className="text-muted-foreground">
-            Tu orden ha sido recibida y está siendo procesada
+            Tu orden fue recibida. La mayoría de servicios inician en <strong>5–15 min</strong>.
           </p>
         </motion.div>
 
@@ -116,7 +116,7 @@ const OrderSuccessPage = () => {
                     <span>Estado</span>
                   </div>
                   <span className="px-3 py-1 bg-yellow-500/10 text-yellow-500 rounded-full text-sm font-medium">
-                    Pendiente
+                    Recibido
                   </span>
                 </div>
               </div>
@@ -165,8 +165,7 @@ const OrderSuccessPage = () => {
                 <div>
                   <h3 className="font-bold mb-1">Tiempo de Entrega</h3>
                   <p className="text-sm text-muted-foreground">
-                    Los servicios comenzarán a procesarse en los próximos minutos. 
-                    La entrega completa puede tomar de 1 a 24 horas dependiendo del volumen.
+                    Inicio estimado: <strong>5–15 min</strong>. La entrega completa depende del servicio/volumen (típicamente 15–120 min).
                   </p>
                 </div>
               </CardContent>
